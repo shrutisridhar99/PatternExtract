@@ -1,0 +1,5 @@
+opencv-python
+pandas
+numpy
+glob2
+tqdm
