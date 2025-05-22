@@ -1,6 +1,6 @@
 # PatternExtract ‒ Ki67 Spatial Point Pattern Pipeline
 
-**PatternExtract** is an automated pipeline to extract and convert Ki67‑positive detections from whole‑slide images or tissue microarrays into spatial point pattern (`ppp`) objects using OpenCV, QuPath, and R's `spatstat`.
+**PatternExtract** is an automated pipeline to extract and convert detections from whole‑slide images or tissue microarrays into spatial point pattern (`ppp`) objects using OpenCV, QuPath, and R's `spatstat`.
 
 ## Workflow
 1. Pre‑process images in Python (OpenCV)
