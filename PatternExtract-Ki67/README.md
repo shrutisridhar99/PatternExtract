@@ -4,10 +4,9 @@
 
 ## Workflow
 1. Pre‑process images in Python (OpenCV)
-2. Detect Ki67+ cells in QuPath (Groovy)
-3. Convert GeoJSON to CSV
-4. Build `ppp` objects in R
-5. Archive outputs
+2. Create GeoJSON in QuPath (Groovy)
+3. Build `ppp` objects in R
+
 
 See `Full_program_run_Ki67.ipynb` for a runnable notebook.
 
