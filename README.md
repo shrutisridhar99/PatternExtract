@@ -27,8 +27,10 @@ Convert the exported spatial coordinates into analyzable point pattern datasets.
 
 Below are examples of the resulting point patterns when using a convex-hull window (approximate tissue boundary) versus a precise GeoJSON annotation (true tissue contour).
 
+Convex-hull window (approximate tissue boundary)
 ![Point pattern with convex-hull window](pattern_example_convexhull.png)
 
+Precise GeoJSON annotation (true tissue contour)
 ![Point pattern with geoJSON annotation](pattern_example_geoJSON.png)
 
 See `Full_program_run_Ki67.ipynb` for a complete, runnable example of the full pipeline.
