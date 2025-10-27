@@ -4,23 +4,27 @@ It integrates `OpenCV`, `QuPath`, and `R’s spatstat` framework to streamline q
 This workflow presents an example for Ki67 histology marker.
 
 ## Workflow
-1. Pre-process images in Python (`OpenCV`)
+#### 1. Pre-process images in Python (`OpenCV`)
 Overlay cell centroids from CSVs onto tissue images to generate masks, preserving tissue contours and holes where cells are absent.
 
-#### Example
+**Example**
+
 RGB image:
+
 ![RGB image](data/Images_RGB/NSB__NUH%20A2_1_HP_IM3_0_Core%5B1,1,14,1%5D_%5B50156,5368%5D_component_data.tif%20-%20resolution%20%231.jpg)
 
 Mask annotation:
+
 ![Mask annotation of the RGB image](data/Mask/NSB__NUH%20A2_1_HP_IM3_0_Core%5B1,1,14,1%5D_%5B50156,5368%5D_component_data.tif%20-%20resolution%20%231.tiff)
 
-2. Generate GeoJSONs in QuPath (`Groovy` script)
+#### 2. Generate GeoJSONs in QuPath (`Groovy` script)
 Run pixel classification and object segmentation in QuPath to generate GeoJSON annotations of tissue regions, filling holes and preserving region structure.
 
-3. Construct `ppp` objects in R (`spatstat`)
+#### 3. Construct `ppp` objects in R (`spatstat`)
 Convert the exported spatial coordinates into analyzable point pattern datasets.
 
-#### Example
+**Example**
+
 Below are examples of the resulting point patterns when using a convex-hull window (approximate tissue boundary) versus a precise GeoJSON annotation (true tissue contour).
 
 ![Point pattern with convex-hull window](pattern_example_convexhull.png)
@@ -49,6 +53,8 @@ conda install jupyter -y  # optional: to run the notebook
 # execute the pipeline notebook
 jupyter nbconvert --to notebook --execute Full_program_run_Ki67.ipynb
 ```
+
+After updating the file paths on line 40 of `createproject_ki67.groovy` and line 29 of `R_script_ki67.R` to match the correct folders on your machine, you can run the cells in the Jupyter notebook.
 
 ## Initially required project structure
 ```bash
