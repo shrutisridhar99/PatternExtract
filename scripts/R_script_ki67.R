@@ -26,14 +26,16 @@ library(spatstat.geom)
 ###############################################################################
 
 ## ----------------------------- USER PATHS ----------------------------------#
-csv_dir      <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/CSV"        # raw CSV centroids
-rds_out_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/RDS/"     # initial ppp RDS
-geojson_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/geoJSON"   # QuPath annotations
-final_rdsdir <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/final"   # cleaned ppp RDS
-img_out_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/Images"  # diagnostic TIFFs
-log_txt      <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/ki67_R_Data.txt" # overall log
-log_1p       <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/ki67_R_Data_1p.txt" # >1 % outside
-log_5p       <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data/R_ki67/ki67_R_Data_5p.txt" # >5 % outside
+data_dir <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/data"
+
+csv_dir      <- file.path(data_dir, "CSV")
+rds_out_dir  <- file.path(data_dir, "RDS/")
+geojson_dir  <- file.path(data_dir, "geoJSON")
+final_rdsdir <- file.path(data_dir, "R_ki67", "final")
+img_out_dir  <- file.path(data_dir, "R_ki67", "Images")
+log_txt      <- file.path(data_dir, "R_ki67", "ki67_R_Data.txt")
+log_1p       <- file.path(data_dir, "R_ki67", "ki67_R_Data_1p.txt")
+log_5p       <- file.path(data_dir, "R_ki67", "ki67_R_Data_5p.txt")
 ## ---------------------------------------------------------------------------#
 
 ###############################################################################
