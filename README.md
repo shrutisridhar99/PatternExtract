@@ -8,8 +8,10 @@ This workflow presents an example for Ki67 histology marker.
 Overlay cell centroids from CSVs onto tissue images to generate masks, preserving tissue contours and holes where cells are absent.
 
 #### Example
+RGB image:
 ![RGB image](data/Images_RGB/NSB__NUH%20A2_1_HP_IM3_0_Core%5B1,1,14,1%5D_%5B50156,5368%5D_component_data.tif%20-%20resolution%20%231.jpg)
 
+Mask annotation:
 ![Mask annotation of the RGB image](data/Mask/NSB__NUH%20A2_1_HP_IM3_0_Core%5B1,1,14,1%5D_%5B50156,5368%5D_component_data.tif%20-%20resolution%20%231.tiff)
 
 2. Generate GeoJSONs in QuPath (`Groovy` script)
