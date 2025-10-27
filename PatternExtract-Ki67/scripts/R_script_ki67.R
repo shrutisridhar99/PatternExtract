@@ -18,21 +18,24 @@ library(spatstat)   # core spatial point-pattern toolkit
 library(alphahull)  # convex-hull helper
 library(tidyverse)  # data wrangling
 library(sp)         # spatial classes
-library(maptools)   # spatial utilities
-library(PBSmapping) # extra spatial tools
+# library(maptools)   # spatial utilities
+# library(PBSmapping) # extra spatial tools
 library(sf)         # modern simple-feature API
+sf::sf_use_s2(FALSE)
 library(geojsonio)  # read/write GeoJSON
+library(spatstat.geom)
+
 ###############################################################################
 
 ## ----------------------------- USER PATHS ----------------------------------#
-csv_dir      <- "C:/Users/siddh/Downloads/Ki67/CSV"        # raw CSV centroids
-rds_out_dir  <- "C:/Users/siddh/Downloads/R_ki67/RDS/"     # initial ppp RDS
-geojson_dir  <- "C:/Users/siddh/Downloads/Ki67/geoJSON/"   # QuPath annotations
-final_rdsdir <- "C:/Users/siddh/Downloads/R_ki67/final/"   # cleaned ppp RDS
-img_out_dir  <- "C:/Users/siddh/Downloads/R_ki67/Images/"  # diagnostic TIFFs
-log_txt      <- "C:/Users/siddh/Downloads/ki67_R_Data.txt" # overall log
-log_1p       <- "C:/Users/siddh/Downloads/ki67_R_Data_1p.txt" # >1 % outside
-log_5p       <- "C:/Users/siddh/Downloads/ki67_R_Data_5p.txt" # >5 % outside
+csv_dir      <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/CSV"        # raw CSV centroids
+rds_out_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/RDS/"     # initial ppp RDS
+geojson_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/geoJSON"   # QuPath annotations
+final_rdsdir <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/final"   # cleaned ppp RDS
+img_out_dir  <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/Images"  # diagnostic TIFFs
+log_txt      <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/ki67_R_Data.txt" # overall log
+log_1p       <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/ki67_R_Data_1p.txt" # >1 % outside
+log_5p       <- "/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/R_ki67/ki67_R_Data_5p.txt" # >5 % outside
 ## ---------------------------------------------------------------------------#
 
 ###############################################################################
@@ -45,7 +48,8 @@ for (file_path in csv_files) {
 
   # --------- read detections -------------------------------------------------
   raw        <- read.csv(file_path, sep = "\t")
-  sample_id  <- str_split(file_path, "/")[[1]][7]   # assumes fixed depth
+  filename <- basename(file_path)
+  sample_id <- tools::file_path_sans_ext(filename)
   message("Processing: ", sample_id)
 
   # --------- build data frame of centroids ----------------------------------
@@ -57,19 +61,23 @@ for (file_path in csv_files) {
 
   # --------- create convex-hull window and ppp ------------------------------
   win <- convexhull.xy(df$x, df$y)
-  pp  <- as.ppp(df, W = win, marks = data.frame(df$label))
+  # pp  <- as.ppp(df, W = win, marks = data.frame(df$label))
+  pp  <- as.ppp(df, W = win)
 
   # --------- quick visual check ---------------------------------------------
+  dir.create(img_out_dir, recursive = TRUE, showWarnings = FALSE)
+  pdf(file = file.path(img_out_dir, paste0(sample_id, "_preview.pdf")))
   plot(pp, cex = 0.2, main = sample_id)
+  dev.off()
 
   # --------- save initial RDS -----------------------------------------------
+  dir.create(rds_out_dir, recursive = TRUE, showWarnings = FALSE)
   saveRDS(pp, file = paste0(rds_out_dir, sample_id, ".RDS"))
 }
 
 ###############################################################################
 # PART 2 – Replace window with precise GeoJSON annotation
 ###############################################################################
-
 geojson_files <- list.files(geojson_dir, full.names = TRUE)
 scount1 <- 0  # counter: >1 % points outside
 scount5 <- 0  # counter: >5 % points outside
@@ -80,10 +88,18 @@ for (gj in geojson_files) {
   message("Annotating: ", filename)
 
   # --------- read GeoJSON and merge polygons --------------------------------
-  poly_sp <- geojson_read(gj, what = "sp")            # SpatialPolygonsDataFrame
-  poly_list <- slot(as(poly_sp, "SpatialPolygons"), "polygons")
-  winlist   <- lapply(poly_list, function(z) as.owin(SpatialPolygons(list(z))))
-  win       <- Reduce(union.owin, winlist)            # merged window
+  # Read GeoJSON
+  poly_sf <- st_read(gj, quiet = TRUE)
+  st_crs(poly_sf) <- NA # Remove coordinate reference system (CRS), treat as planar (x/y in pixels or microns)
+  poly_sf <- poly_sf[st_geometry_type(poly_sf) %in% c("POLYGON","MULTIPOLYGON"), ]
+
+  merged_poly <- st_union(poly_sf)
+  win <- as.owin(merged_poly)
+
+  if (nrow(poly_sf) == 0) {
+    warning(paste("No valid polygons in", filename, "- skipping"))
+    next
+  }
 
   # --------- fetch matching ppp object --------------------------------------
   rds_path <- file.path(rds_out_dir,
@@ -114,12 +130,15 @@ for (gj in geojson_files) {
 
   # --------- diagnostic TIFF -------------------------------------------------
   tiff(file = file.path(img_out_dir,
-                        paste0(tools::file_path_sans_ext(filename), ".tiff")),
-       compression = "lzw")
+                        paste0(tools::file_path_sans_ext(filename), ".tiff")))
   plot.ppp(new_pp, main = filename, cex = 0.3)
   dev.off()
 
   # --------- save clean ppp --------------------------------------------------
+  # Create the directory if it doesn't exist
+  if (!dir.exists(final_rdsdir)) {
+    dir.create(final_rdsdir, recursive = TRUE)
+  }
   saveRDS(new_pp,
           file = file.path(final_rdsdir,
                            paste0(tools::file_path_sans_ext(filename), ".RDS")))

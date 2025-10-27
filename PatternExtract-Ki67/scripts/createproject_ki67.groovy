@@ -37,7 +37,7 @@ if (selectedDir == null)          // user cancelled
     return
 
 // -------------------- 2. Define/prepare project folder ----------------------------------
-File directory = new File("C:/Users/siddh/Downloads/New folder/Project/ki67")
+File directory = new File("/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/Project/ki67")
 if (!directory.exists()) {
     println "No project directory found — creating one!"
     directory.mkdirs()
@@ -47,9 +47,10 @@ if (!directory.exists()) {
 def project = Projects.createProject(directory, BufferedImage.class)
 
 // -------------------- 4. Initialise tile-cache (better performance) ---------------------
-def imageRegionStore = ImageRegionStoreFactory.createImageRegionStore(
-        QuPathGUI.getTileCacheSizeBytes()
-)
+// def imageRegionStore = ImageRegionStoreFactory.createImageRegionStore(
+//         QuPathGUI.getTileCacheSizeBytes()
+// )
+def imageRegionStore = ImageRegionStoreFactory.createImageRegionStore()
 
 // -------------------- 5. Recursively add images to project ------------------------------
 selectedDir.eachFileRecurse(FileType.FILES) { file ->

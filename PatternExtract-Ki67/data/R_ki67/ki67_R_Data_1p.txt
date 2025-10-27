@@ -1,0 +1,3 @@
+NSB__NUH A2_1_HP_IM3_0_Core[1,3,5,1]_component_data.tif - resolution #1.geojson Total points: 1135 Points outside: 640 Percentage: 56.39 
+NSB__NUH B2_1_HP_IM3_0_Core[1,7,14,1]_component_data.tif - resolution #1.geojson Total points: 2021 Points outside: 103 Percentage: 5.1 
+NSB__NUH C2_1_HP_IM3_0_Core[1,8,14,1]_[48994,18978]_component_data.tif - resolution #1.geojson Total points: 3348 Points outside: 48 Percentage: 1.43 

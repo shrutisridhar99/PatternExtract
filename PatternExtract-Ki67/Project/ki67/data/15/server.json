@@ -1,0 +1,58 @@
+{
+  "builderType": "uri",
+  "providerClassName": "qupath.lib.images.servers.bioformats.BioFormatsServerBuilder",
+  "uri": "file:/Users/victoireringler/Documents/Singapore/Thesis/PatternExtract/PatternExtract-Ki67/data/Mask/NSB__NUH%20B2_1_HP_IM3_0_Core%5B1,4,8,1%5D_%5B41807,10408.5%5D_component_data.tif%20-%20resolution%20%231.tiff",
+  "args": [
+    "--series",
+    "0"
+  ],
+  "metadata": {
+    "name": "NSB__NUH B2_1_HP_IM3_0_Core[1,4,8,1]_[41807,10408.5]_component_data.tif - resolution #1.tiff",
+    "width": 1392,
+    "height": 1040,
+    "sizeZ": 1,
+    "sizeT": 1,
+    "channelType": "DEFAULT",
+    "isRGB": true,
+    "pixelType": "UINT8",
+    "levels": [
+      {
+        "downsample": 1.0,
+        "width": 1392,
+        "height": 1040
+      }
+    ],
+    "channels": [
+      {
+        "name": "Red",
+        "color": -65536
+      },
+      {
+        "name": "Green",
+        "color": -16711936
+      },
+      {
+        "name": "Blue",
+        "color": -16776961
+      }
+    ],
+    "pixelCalibration": {
+      "pixelWidth": {
+        "value": 1.0,
+        "unit": "px"
+      },
+      "pixelHeight": {
+        "value": 1.0,
+        "unit": "px"
+      },
+      "zSpacing": {
+        "value": 1.0,
+        "unit": "z-slice"
+      },
+      "timeUnit": "SECONDS",
+      "timepoints": []
+    },
+    "preferredTileWidth": 1392,
+    "preferredTileHeight": 251
+  }
+}
