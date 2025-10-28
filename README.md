@@ -11,11 +11,11 @@ Overlay cell centroids from CSVs onto tissue images to generate masks, preservin
 
 *RGB image*
 
-![RGB image](data/Images_RGB/NSB__NUH%20A2_1_HP_IM3_0_Core%5B1,1,14,1%5D_%5B50156,5368%5D_component_data.tif%20-%20resolution%20%231.jpg)
+![RGB image](example_images/RGB_image_example.jpg)
 
 *Mask annotation*
 
-![Mask annotation of the RGB image](mask_example.jpg)
+![Mask annotation of the RGB image](example_images/mask_example.jpg)
 
 #### 2. Generate GeoJSONs in QuPath (`Groovy` script)
 Run pixel classification and object segmentation in QuPath to generate GeoJSON annotations of tissue regions, filling holes and preserving region structure.
@@ -29,11 +29,11 @@ Below are examples of the resulting point patterns when using a convex-hull wind
 
 *Convex-hull window (approximate tissue boundary)*
 
-![Point pattern with convex-hull window](pattern_example_convexhull.png)
+![Point pattern with convex-hull window](example_images/pattern_example_convexhull.png)
 
 *Precise GeoJSON annotation (true tissue contour)*
 
-![Point pattern with geoJSON annotation](pattern_example_geoJSON.png)
+![Point pattern with geoJSON annotation](example_images/pattern_example_geoJSON.png)
 
 See `Full_program_run_Ki67.ipynb` for a complete, runnable example of the full pipeline.
 
