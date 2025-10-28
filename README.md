@@ -4,8 +4,15 @@ It integrates `OpenCV`, `QuPath`, and `R’s spatstat` framework to streamline q
 This workflow presents an example for Ki67 histology marker.
 
 ## Workflow
-#### 1. Pre-process images in Python (`OpenCV`)
-Overlay cell centroids from CSVs onto tissue images to generate masks, preserving tissue contours and holes where cells are absent.
+### 1. Pre-process images in Python (`OpenCV`)
+Overlay cell centroids from CSVs onto tissue images to generate two-kernel masks, preserving tissue contours and holes where cells are absent.
+
+**Input:**  
+- CSV files containing *x–y* cell coordinates (from any cell segmentation algorithm)  
+- Corresponding tissue image  
+
+**Output:**  
+- Image overlaid with a two-kernel mask
 
 **Example**
 
@@ -17,11 +24,25 @@ Overlay cell centroids from CSVs onto tissue images to generate masks, preservin
 
 ![Mask annotation of the RGB image](example_images/mask_example.jpg)
 
-#### 2. Generate GeoJSONs in QuPath (`Groovy` script)
+### 2. Generate GeoJSONs in QuPath (`Groovy` script)
 Run pixel classification and object segmentation in QuPath to generate GeoJSON annotations of tissue regions, filling holes and preserving region structure.
+This step applies color deconvolution, Gaussian blur, and thresholding to obtain the desired annotation.
 
-#### 3. Construct `ppp` objects in R (`spatstat`)
+**Input:**  
+- Image overlaid with a two-kernel mask from Step&nbsp;1
+
+**Output:**  
+- GeoJSON file containing pixel-classified binary annotations of the image, labeling tissue regions versus residual regions
+  
+### 3. Construct `ppp` objects in R (`spatstat`)
 Convert the exported spatial coordinates into analyzable point pattern datasets.
+
+**Input:**  
+- GeoJSON file containing pixel-classified binary annotations of the image from Step&nbsp;2  
+- CSV file with *x–y* coordinates and phenotype information  
+
+**Output:**  
+- Spatial point pattern (`ppp` object) highlighting tissue regions and annotated phenotypes
 
 **Example**
 
