@@ -3,3 +3,4 @@ pandas
 numpy
 glob2
 tqdm
+streamlit==1.45.1
